@@ -23,4 +23,17 @@ func RegisterRoutes(e *echo.Echo) {
 
 	//
 	e.GET("/users/:id/posts", handlers.GetUserWithPostsJSONLD)
+	//
+	e.GET("/articles", handlers.GetArticles)
+	e.GET("/articles/:id", handlers.GetSingleArticle)
+
+	//
+	e.GET("/technologies", handlers.GetTechnologies)
+	//
+	e.GET("/authors", handlers.GetAuthors)
+	// Status and Visibility routes
+	e.GET("/statuses", handlers.GetStatuses)
+	e.GET("/visibilities", handlers.GetVisibilities)
+	//
+
 }
