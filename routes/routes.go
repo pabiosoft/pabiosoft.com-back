@@ -26,6 +26,7 @@ func RegisterRoutes(e *echo.Echo) {
 	//
 	e.GET("/articles", handlers.GetArticles)
 	e.GET("/articles/:id", handlers.GetSingleArticle)
+	e.POST("/articles", handlers.CreateArticle)
 
 	//
 	e.GET("/technologies", handlers.GetTechnologies)
