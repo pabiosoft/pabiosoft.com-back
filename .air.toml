@@ -37,7 +37,9 @@ tmp_dir = "tmp"
 [log]
   main_only = false
   silent = false
-  time = false
+  time = true # default false
+  color = true    # Afficher les logs en couleur
+  level = "debug" # Niveau de log (debug pour Echo)
 
 [misc]
   clean_on_exit = false

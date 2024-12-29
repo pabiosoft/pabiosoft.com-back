@@ -1,40 +1,55 @@
 package routes
 
 import (
-	"pabiosoft/handlers"
-
+	"database/sql"
 	"github.com/labstack/echo/v4"
+	handlers2 "pabiosoft/action/handlers"
+	"pabiosoft/action/utils"
 )
 
-func RegisterRoutes(e *echo.Echo) {
+func RegisterRoutes(e *echo.Echo, db *sql.DB) {
 	// User routes
-	e.GET("/users", handlers.GetUsers)
-	e.GET("/users/:id", handlers.GetUser)
-	e.POST("/users", handlers.CreateUser)
-	e.PUT("/users/:id", handlers.UpdateUser)
-	e.DELETE("/users/:id", handlers.DeleteUser)
+	e.GET("/users", handlers2.GetUsers)
+	e.GET("/users/:id", handlers2.GetUser)
+	e.POST("/users", handlers2.CreateUser)
+	e.PUT("/users/:id", handlers2.UpdateUser)
+	e.DELETE("/users/:id", handlers2.DeleteUser)
 
 	// Post routes
-	e.GET("/posts", handlers.GetPosts)
-	e.GET("/posts/:id", handlers.GetPost)
-	e.POST("/posts", handlers.CreatePost)
-	e.PUT("/posts/:id", handlers.UpdatePost)
-	e.DELETE("/posts/:id", handlers.DeletePost)
+	e.GET("/posts", handlers2.GetPosts)
+	e.GET("/posts/:id", handlers2.GetPost)
+	e.POST("/posts", handlers2.CreatePost)
+	e.PUT("/posts/:id", handlers2.UpdatePost)
+	e.DELETE("/posts/:id", handlers2.DeletePost)
 
 	//
-	e.GET("/users/:id/posts", handlers.GetUserWithPostsJSONLD)
+	e.GET("/users/:id/posts", handlers2.GetUserWithPostsJSONLD)
 	//
-	e.GET("/articles", handlers.GetArticles)
-	e.GET("/articles/:id", handlers.GetSingleArticle)
-	e.POST("/articles", handlers.CreateArticle)
+	//e.GET("/articles", handlers2.GetArticles)
+	e.GET("/articles", func(c echo.Context) error {
+		return handlers2.GetArticles(c, db) // Assurez-vous de bien passer `db`
+	})
+	e.GET("/articles/:id", func(c echo.Context) error {
+		return handlers2.GetSingleArticle(c, db) // Assurez-vous de bien passer `db`
+	})
+	e.POST("/articles", func(c echo.Context) error {
+		return handlers2.CreateArticle(c, db) // Assurez-vous de bien passer `db`
+	})
+	//e.POST("/articles", handlers2.CreateArticle)
 
 	//
-	e.GET("/technologies", handlers.GetTechnologies)
+	e.GET("/technologies", handlers2.GetTechnologies)
 	//
-	e.GET("/authors", handlers.GetAuthors)
+	e.GET("/authors", handlers2.GetAuthors)
 	// Status and Visibility routes
-	e.GET("/statuses", handlers.GetStatuses)
-	e.GET("/visibilities", handlers.GetVisibilities)
+	e.GET("/statuses", handlers2.GetStatuses)
+	e.GET("/visibilities", handlers2.GetVisibilities)
 	//
+	e.POST("/upload", handlers2.UploadFileHandler)
+	//
+	// Route de test
+	e.GET("/test-db", func(c echo.Context) error {
+		return utils.TestDBConnection(c, db)
+	})
 
 }

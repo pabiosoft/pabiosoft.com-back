@@ -6,6 +6,7 @@ type ArticleDTO struct {
 	Type            string              `json:"@type"`
 	CoverImageUrl   string              `json:"coverImageUrl"`
 	CoverText       string              `json:"coverText"`
+	ProfileImageUrl string              `json:"profileImageUrl"`
 	Date            string              `json:"date"`
 	URL             string              `json:"url"`
 	Author          *AuthorDTO          `json:"author"`
