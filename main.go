@@ -3,7 +3,9 @@ package main
 import (
 	"database/sql"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
+	"net/http"
 	"pabiosoft/action/utils"
 	"pabiosoft/domain/config"
 	"pabiosoft/routes"
@@ -31,11 +33,21 @@ func main() {
 	// Initialiser Echo
 	e := echo.New()
 
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins:     []string{"http://localhost:4200"}, // Autorise uniquement cette origine
+		AllowHeaders:     []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization},
+		AllowMethods:     []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodPatch, http.MethodDelete, http.MethodOptions},
+		AllowCredentials: true, // Si tu envoies des cookies ou des sessions côté client
+		MaxAge:           3600, // Cache les résultats préflight pour 1 heure
+	}))
+
 	// Enregistrer les routes
 	routes.RegisterRoutes(e, adminDB)
 
 	// Activer le mode debug
 	e.Debug = true
+
+	e.Use(middleware.Logger())
 
 	// Lancer le serveur
 	e.Logger.Fatal(e.Start(":8083"))

@@ -1,6 +1,6 @@
 package dto
 
 type VisibilityDTO struct {
-	ID   string `json:"id"`
+	ID   string `json:"@id"`
 	Name string `json:"name"`
 }

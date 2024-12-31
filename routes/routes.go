@@ -3,11 +3,17 @@ package routes
 import (
 	"database/sql"
 	"github.com/labstack/echo/v4"
+	"net/http"
 	handlers2 "pabiosoft/action/handlers"
 	"pabiosoft/action/utils"
 )
 
 func RegisterRoutes(e *echo.Echo, db *sql.DB) {
+
+	e.GET("/test", func(c echo.Context) error {
+		return c.JSON(http.StatusOK, map[string]string{"message": "CORS is working!"})
+	})
+
 	// User routes
 	e.GET("/users", handlers2.GetUsers)
 	e.GET("/users/:id", handlers2.GetUser)
@@ -35,6 +41,10 @@ func RegisterRoutes(e *echo.Echo, db *sql.DB) {
 	e.POST("/articles", func(c echo.Context) error {
 		return handlers2.CreateArticle(c, db) // Assurez-vous de bien passer `db`
 	})
+	e.PATCH("/articles/:id/url", func(c echo.Context) error {
+		return handlers2.UpdateArticleURL(c, db)
+	})
+
 	//e.POST("/articles", handlers2.CreateArticle)
 
 	//
@@ -51,5 +61,8 @@ func RegisterRoutes(e *echo.Echo, db *sql.DB) {
 	e.GET("/test-db", func(c echo.Context) error {
 		return utils.TestDBConnection(c, db)
 	})
+
+	// Servir les fichiers statiques
+	e.Static("/uploads", "./public/uploads")
 
 }

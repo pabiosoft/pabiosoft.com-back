@@ -13,7 +13,7 @@ func GetAuthors(c echo.Context) error {
 	// Transformer les données en DTO
 	for _, author := range models.Authors {
 		authorsDTO = append(authorsDTO, dto.AuthorDTO{
-			ID:              "/authors/" + author.ID,
+			ID:              author.ID,
 			Name:            author.Name,
 			Country:         author.Country,
 			ProfileImageUrl: author.ProfileImageUrl,

@@ -10,27 +10,15 @@ type Author struct {
 // Fake database for Authors
 var Authors = []Author{
 	{
-		ID:              "23f8b9c4-3f1e-4d8d-992a-3b4f9b4e7a12",
-		Name:            "Jane Doe",
+		ID:              "8e21a1ff-4cd7-4c7c-9394-2c35a7e7a1a2",
+		Name:            "BALDE isma",
 		Country:         "France",
-		ProfileImageUrl: "https://example.com/images/jane_doe.jpg",
+		ProfileImageUrl: "https://img.icons8.com/?size=100&id=23242&format=png&color=000000",
 	},
 	{
-		ID:              "5b9d4c6e-3e2f-4c5f-951b-2a3d4f5b9a78",
-		Name:            "Alice Martin",
-		Country:         "Belgium",
-		ProfileImageUrl: "https://example.com/images/alice_martin.jpg",
-	},
-	{
-		ID:              "8b9c1234-5f4b-4a6d-9f1a-2e7b5f6a8b78",
+		ID:              "e12a3aff-5da4-4cd7-8895-2f9b6a9e8c1b",
 		Name:            "John Smith",
-		Country:         "Germany",
-		ProfileImageUrl: "https://example.com/images/john_smith.jpg",
-	},
-	{
-		ID:              "9c1e4f2a-5b4d-6a3f-7e1c-3f9b7a6d8e2c",
-		Name:            "Chris Doe",
-		Country:         "Netherlands",
-		ProfileImageUrl: "https://example.com/images/chris_doe.jpg",
+		Country:         "Belgium",
+		ProfileImageUrl: "https://img.icons8.com/?size=100&id=23242&format=png&color=000000",
 	},
 }

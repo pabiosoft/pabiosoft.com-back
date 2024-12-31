@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"database/sql"
+	"encoding/json"
 	"github.com/labstack/echo/v4"
 	"log"
 	"net/http"
@@ -16,7 +17,7 @@ func GetArticles(c echo.Context, db *sql.DB) error {
         SELECT 
             a.id, a.type, a.cover_image_url, a.cover_text, a.date, 
             a.url, a.profile_image_url, a.estimate_time, 
-            a.meta_title, a.meta_description, a.created_at, a.updated_at, 
+            a.meta_title, a.meta_description, a.created_at, a.updated_at,a.tags,
             au.id AS author_id, au.name AS author_name, au.country AS author_country, au.profile_image_url AS author_profile_image_url,
             s.id AS status_id, s.name AS status_name,
             v.id AS visibility_id, v.name AS visibility_name
@@ -40,11 +41,12 @@ func GetArticles(c echo.Context, db *sql.DB) error {
 		var article dto.ArticleDTO
 		var authorID, authorName, authorCountry, authorProfileImageUrl sql.NullString
 		var statusID, statusName, visibilityID, visibilityName sql.NullString
+		var tagsJSON sql.NullString
 
 		err := rows.Scan(
 			&article.ID, &article.Type, &article.CoverImageUrl, &article.CoverText, &article.Date,
 			&article.URL, &article.ProfileImageUrl, &article.EstimateTime,
-			&article.MetaTitle, &article.MetaDescription, &article.CreatedAt, &article.UpdatedAt,
+			&article.MetaTitle, &article.MetaDescription, &article.CreatedAt, &article.UpdatedAt, &tagsJSON,
 			&authorID, &authorName, &authorCountry, &authorProfileImageUrl,
 			&statusID, &statusName, &visibilityID, &visibilityName,
 		)
@@ -53,6 +55,13 @@ func GetArticles(c echo.Context, db *sql.DB) error {
 			continue
 		}
 
+		// Désérialisez les tags JSON
+		if tagsJSON.Valid {
+			var tags []string
+			if err := json.Unmarshal([]byte(tagsJSON.String), &tags); err == nil {
+				article.Tags = tags
+			}
+		}
 		article.Context = "/contexts/Article"
 		if authorID.Valid {
 			article.Author = &dto.AuthorDTO{

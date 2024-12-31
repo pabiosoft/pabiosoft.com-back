@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"database/sql"
+	"encoding/json"
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 	"log"
@@ -78,20 +79,27 @@ func CreateArticle(c echo.Context, db *sql.DB) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Type cannot be empty"})
 	}
 
+	// ajout des tags
+	tagsJSON, err := json.Marshal(newArticleDTO.Tags)
+	if err != nil {
+		log.Printf("Erreur lors de la conversion des tags en JSON : %v", err)
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Erreur lors du traitement des tags"})
+	}
+
 	// Insérer l'article dans la table `articles`
 	articleQuery := `
         INSERT INTO articles (
             id, type, cover_image_url, cover_text, date, 
             url, profile_image_url, estimate_time, 
             meta_title, meta_description, created_at, updated_at, 
-            author_id, status_id, visibility_id
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            author_id, status_id, visibility_id,tags
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)
     `
 	_, err = tx.Exec(articleQuery,
 		newArticleID, newArticleDTO.Type, newArticleDTO.CoverImageUrl, newArticleDTO.CoverText, formattedDate,
 		newArticleDTO.URL, newArticleDTO.ProfileImageUrl, newArticleDTO.EstimateTime,
 		newArticleDTO.MetaTitle, newArticleDTO.MetaDescription, formattedCreatedAt, formattedUpdatedAt,
-		newArticleDTO.Author.ID, newArticleDTO.Status.ID, newArticleDTO.Visibility.ID,
+		newArticleDTO.Author.ID, newArticleDTO.Status.ID, newArticleDTO.Visibility.ID, tagsJSON,
 	)
 	if err != nil {
 		log.Printf("Erreur lors de l'insertion de l'article : %v", err)
@@ -176,6 +184,7 @@ func CreateArticle(c echo.Context, db *sql.DB) error {
 			"@id":       newArticleID,
 			"@type":     newArticleDTO.Type,
 			"coverText": newArticleDTO.CoverText,
+			"tags":      newArticleDTO.Tags,
 		},
 	}
 

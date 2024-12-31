@@ -41,6 +41,7 @@ type Article struct {
 	UpdatedAt       string           `json:"updatedAt,omitempty"`
 	Status          *Status          `json:"status"`
 	Visibility      *Visibility      `json:"visibility"`
+	Tags            []string         `json:"tags"` // Nouveau champ
 }
 
 // FACTICES

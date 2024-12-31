@@ -49,9 +49,24 @@ func UploadFileHandler(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Unable to copy file content"})
 	}
 
-	// Retourner l'URL du fichier sauvegardé
+	//// Retourner l'URL du fichier sauvegardé
+	//return c.JSON(http.StatusOK, map[string]string{
+	//	"message": "File uploaded successfully",
+	//	"url":     fmt.Sprintf("/%s/%s", "uploads", uniqueFilename), // URL relative pour servir le fichier
+	//})
+
+	// Lire l'adresse de l'API depuis l'environnement
+	apiBaseURL := os.Getenv("API_BASE_URL")
+	if apiBaseURL == "" {
+		apiBaseURL = "http://localhost:8083" // Valeur par défaut si la variable n'est pas définie
+	}
+
+	// Construire l'URL complète
+	fullURL := fmt.Sprintf("%s/uploads/%s", apiBaseURL, uniqueFilename)
+
+	// Retourner l'URL complète du fichier sauvegardé
 	return c.JSON(http.StatusOK, map[string]string{
 		"message": "File uploaded successfully",
-		"url":     fmt.Sprintf("/%s/%s", "uploads", uniqueFilename), // URL relative pour servir le fichier
+		"url":     fullURL,
 	})
 }

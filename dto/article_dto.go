@@ -20,6 +20,7 @@ type ArticleDTO struct {
 	UpdatedAt       string              `json:"updatedAt,omitempty"`
 	Status          *StatusDTO          `json:"status"`
 	Visibility      *VisibilityDTO      `json:"visibility"`
+	Tags            []string            `json:"tags"` // Nouveau champ
 }
 
 type ChapterDTO struct {
