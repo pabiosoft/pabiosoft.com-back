@@ -62,6 +62,11 @@ func RegisterRoutes(e *echo.Echo, db *sql.DB) {
 		return utils.TestDBConnection(c, db)
 	})
 
+	// ALGOLIA
+	e.POST("/algolia/sync", func(c echo.Context) error {
+		return handlers2.SyncAllArticlesToAlgolia(c, db, "YLVS5BS6XW", "c3041d7fb93653edf2dd983e6c6115c9")
+	})
+
 	// Servir les fichiers statiques
 	e.Static("/uploads", "./public/uploads")
 

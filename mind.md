@@ -1,3 +1,8 @@
+## start go app
+```shell
+ air
+```
+
 ```shell
 docker exec -it go_mariadb bash
 apt install -y mariadb-client
