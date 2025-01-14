@@ -50,5 +50,6 @@ func main() {
 	e.Use(middleware.Logger())
 
 	// Lancer le serveur
-	e.Logger.Fatal(e.Start(":8083"))
+	//e.Logger.Fatal(e.Start(":8083"))
+	e.Logger.Fatal(e.Start(":8080"))
 }

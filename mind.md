@@ -2,6 +2,10 @@
 ```shell
  air
 ```
+## GIT PUSH
+```shell
+git push pabios main & git push origin main
+```
 
 ```shell
 docker exec -it go_mariadb bash
